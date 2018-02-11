@@ -1,0 +1,23 @@
+﻿@model Webshop.Models.ShopViewModels.ShopIndexViewModel
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "_Layout";
+}
+
+<html>
+<head>
+    <title>Items</title>
+</head>
+<body>
+<div>
+    @foreach (var item in Model.ItemViewModels)
+    {
+        <p>
+            <b>@item.Name</b> @item.Price.ToString("C")<br/>
+            @item.Description<br/>
+        </p>
+    }
+</div>
+</body>
+</html>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Webshop.Shop
 {
-    interface IShopRepository
+    public interface IShopRepository
     {
         /// <summary>
         /// Gets item with given id.
@@ -13,10 +13,23 @@ namespace Webshop.Shop
         ShopItem GetItem(Guid itemId);
 
         /// <summary>
+        /// Gets category with given name from repository.
+        /// </summary>
+        /// <param name="name">Name of the category</param>
+        /// <returns>Category if exists, null otherwise. </returns>
+        ShopItemCategory GetCategory(string name);
+
+        /// <summary>
         /// Adds item to database. If item already exists throws DuplicateItemException.
         /// </summary>
         /// <param name="item">Item to add to database.</param>
         void AddItem(ShopItem item);
+
+        /// <summary>
+        /// Add category to database. If category with same id already exists throws DuplicateCategoryException.
+        /// </summary>
+        /// <param name="category">Category to add</param>
+        void AddCategory(ShopItemCategory category);
 
         /// <summary>
         /// Remove item with given id from database.
@@ -26,7 +39,7 @@ namespace Webshop.Shop
         bool RemoveItem(Guid itemId);
 
         /// <summary>
-        /// Updates item in database.
+        /// Updates item in database. If id doesnt exist, add one.
         /// </summary>
         /// <param name="item">Item to update.</param>
         void UpdateItem(ShopItem item);
@@ -49,8 +62,7 @@ namespace Webshop.Shop
         /// <param name="category">Category of items we are looking for</param>
         /// <returns>List of all items with the category </returns>
         List<ShopItem> GetFilteredByCategory(ShopItemCategory category);
-
-
+        
 
     }
 }
