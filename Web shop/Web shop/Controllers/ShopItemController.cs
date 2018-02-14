@@ -28,7 +28,7 @@ namespace Web_shop.Controllers
 
             foreach (var item in items)
             {
-                ItemViewModel itemViewModel = new ItemViewModel(item.Name, item.Price, item.Description);
+                ItemViewModel itemViewModel = new ItemViewModel(item.Id, item.Name, item.Price, item.Description);
                 itemViewModels.Add(itemViewModel);
             }
 
@@ -74,6 +74,22 @@ namespace Web_shop.Controllers
             }
             _repository.AddItem(newItem);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet("ItemDetails/{itemId}")]
+        public async Task<IActionResult> ItemDetails(Guid itemId)
+        {
+            ShopItem item = _repository.GetItem(itemId);
+
+            ItemDetailsViewModel itemDetailsViewModel = new ItemDetailsViewModel(item.Id, item.Name, item.Price, item.Description);
+
+            return View(itemDetailsViewModel);
+        }
+
+
+        public async Task<IActionResult> EditItem()
+        {
+            throw new NotImplementedException();
         }
     }
 }
