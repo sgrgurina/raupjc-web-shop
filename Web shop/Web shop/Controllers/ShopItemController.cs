@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.Models.ShopViewModels;
 using Webshop.Shop;
-using Web_shop.Models;
 
 namespace Web_shop.Controllers
 {
@@ -28,7 +26,7 @@ namespace Web_shop.Controllers
 
             foreach (var item in items)
             {
-                ItemViewModel itemViewModel = new ItemViewModel(item.Id, item.Name, item.Price, item.Description);
+                ItemViewModel itemViewModel = new ItemViewModel(item.Id, item.Name, item.Price);
                 itemViewModels.Add(itemViewModel);
             }
 
@@ -58,7 +56,7 @@ namespace Web_shop.Controllers
                     //if it isnt empty or null
                     if (!string.IsNullOrWhiteSpace(trimmedCategoryName))
                     {
-                        ShopItemCategory existingCategory = _repository.GetCategory(trimmedCategoryName);
+                        ShopItemCategory existingCategory = _repository.GetCategoryByName(trimmedCategoryName);
                         if (existingCategory == null)
                         {
                             ShopItemCategory newCategory = new ShopItemCategory(trimmedCategoryName);
@@ -76,6 +74,47 @@ namespace Web_shop.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult AddCategory()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(AddCategoryViewModel model)
+        {
+            string newCategoryName = model.Name.Trim().ToLower();
+            
+            ShopItemCategory existingCategory = _repository.GetCategoryByName(newCategoryName);
+            if (existingCategory == null)
+            {
+                ShopItemCategory newCategory = new ShopItemCategory(newCategoryName);
+                _repository.AddCategory(newCategory);
+            }
+            else
+            {
+                return RedirectToAction("AddCategory");
+            }
+
+            return RedirectToAction("CategoryIndex");
+
+        }
+
+        public async Task<IActionResult> CategoryIndex()
+        {
+            List<ShopItemCategory> categories = _repository.GetAllCategories();
+            List<CategoryViewModel> categoryViewModels = new List<CategoryViewModel>();
+
+            foreach (var category in categories)
+            {
+                CategoryViewModel newCategoryViewModel = new CategoryViewModel(category.Id, category.Name);
+                categoryViewModels.Add(newCategoryViewModel);
+            }
+
+            CategoryIndexViewModel categoryIndexViewModel = new CategoryIndexViewModel(categoryViewModels);
+            return View(categoryIndexViewModel);
+        }
+
         [HttpGet("ItemDetails/{itemId}")]
         public async Task<IActionResult> ItemDetails(Guid itemId)
         {
@@ -87,9 +126,47 @@ namespace Web_shop.Controllers
         }
 
 
-        public async Task<IActionResult> EditItem()
+        public async Task<IActionResult> EditItem(Guid itemId)
         {
-            throw new NotImplementedException();
+            ShopItem item = _repository.GetItem(itemId);
+            return View(item);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditItem(ShopItem item)
+        {
+            _repository.UpdateItem(item);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> EditCategory(Guid categoryId)
+        {
+            ShopItemCategory category = _repository.GetCategoryById(categoryId);
+            return View(category);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCategory(ShopItemCategory category)
+        {
+            _repository.UpdateCategory(category);
+            return RedirectToAction("CategoryIndex");
+        }
+
+        [HttpGet("RemoveItem/{itemId}")]
+        public async Task<IActionResult> RemoveItem(Guid itemId)
+        {
+
+            _repository.RemoveItem(itemId);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("RemoveCategory/{itemId}")]
+        public async Task<IActionResult> RemoveCategory(Guid itemId)
+        {
+            _repository.RemoveCategory(itemId);
+            return RedirectToAction("CategoryIndex");
+        }
+
+        
     }
 }

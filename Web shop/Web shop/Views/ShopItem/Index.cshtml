@@ -14,8 +14,8 @@
     @foreach (var item in Model.ItemViewModels)
     {
         <p>
-            <b>@item.Name</b> Price: @item.Price.ToString("C")<br/>
-            @item.Description<br/>
+            <b>@item.Name</b><br /> 
+            Price: @item.Price.ToString("C")<br/>
             <a asp-controller="ShopItem" asp-action="ItemDetails", asp-route-itemId="@item.Id">Details</a>
         </p>
     }

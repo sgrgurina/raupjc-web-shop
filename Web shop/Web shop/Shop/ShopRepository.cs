@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,9 +22,15 @@ namespace Webshop.Shop
             return item;
         }
 
-        public ShopItemCategory GetCategory(string name)
+        public ShopItemCategory GetCategoryByName(string name)
         {
             ShopItemCategory category = _context.Categories.FirstOrDefault(c => c.Name == name);
+            return category;
+        }
+
+        public ShopItemCategory GetCategoryById(Guid id)
+        {
+            ShopItemCategory category = _context.Categories.FirstOrDefault(c => c.Id == id);
             return category;
         }
 
@@ -61,10 +68,27 @@ namespace Webshop.Shop
             return true;
         }
 
+        public bool RemoveCategory(Guid categoryId)
+        {
+            ShopItemCategory categoryToRemove = _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+            if (categoryToRemove == null)
+            {
+                return false;
+            }
+            _context.Categories.Remove(categoryToRemove);
+            _context.SaveChanges();
+            return true;
+        }
+
         public void UpdateItem(ShopItem item)
         {
+            _context.Entry(item).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
 
-            _context.Items.AddOrUpdate(item);
+        public void UpdateCategory(ShopItemCategory category)
+        {
+            _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

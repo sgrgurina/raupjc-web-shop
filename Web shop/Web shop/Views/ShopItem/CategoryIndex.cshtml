@@ -1,0 +1,29 @@
+﻿@model Webshop.Models.ShopViewModels.CategoryIndexViewModel
+
+@{
+    ViewData["Title"] = "CategoryIndex";
+}
+
+<h2>Categories</h2>
+
+<p>
+    <a asp-action="AddCategory">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var category in Model.CategoryViewModels) {
+        <tr>
+            <td>
+                <b>Name:</b> &nbsp;@category.Name &nbsp; |
+                <a asp-action="EditCategory" , asp-route-categoryId="@category.Id">Edit</a> |
+                <a asp-action="RemoveCategory" , asp-route-categoryId="@category.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
