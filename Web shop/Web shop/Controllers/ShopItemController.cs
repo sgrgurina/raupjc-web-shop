@@ -35,12 +35,14 @@ namespace Web_shop.Controllers
             return View(indexViewModel);
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Add(AddItemViewModel model)
         {
             ShopItem newItem = new ShopItem(model.Name, model.Price, model.Description );
@@ -74,13 +76,14 @@ namespace Web_shop.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult AddCategory()
         {
             return View();
         }
-
-
+        
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddCategory(AddCategoryViewModel model)
         {
             string newCategoryName = model.Name.Trim().ToLower();
@@ -125,7 +128,7 @@ namespace Web_shop.Controllers
             return View(itemDetailsViewModel);
         }
 
-
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> EditItem(Guid itemId)
         {
             ShopItem item = _repository.GetItem(itemId);
@@ -133,6 +136,7 @@ namespace Web_shop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> EditItem(ShopItem item)
         {
             item.Name = item.Name.Trim();
@@ -141,6 +145,7 @@ namespace Web_shop.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> EditCategory(Guid categoryId)
         {
             ShopItemCategory category = _repository.GetCategoryById(categoryId);
@@ -148,6 +153,7 @@ namespace Web_shop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> EditCategory(ShopItemCategory category)
         {
             category.Name = category.Name.Trim().ToLower();
@@ -156,6 +162,7 @@ namespace Web_shop.Controllers
         }
 
         [HttpGet("RemoveItem/{itemId}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> RemoveItem(Guid itemId)
         {
 
@@ -164,6 +171,7 @@ namespace Web_shop.Controllers
         }
 
         [HttpGet("RemoveCategory/{categoryId}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> RemoveCategory(Guid categoryId)
         {
             _repository.RemoveCategory(categoryId);

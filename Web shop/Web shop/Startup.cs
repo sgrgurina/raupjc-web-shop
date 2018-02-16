@@ -52,7 +52,7 @@ namespace Web_shop
                 googleOptions.ClientId = "641406574507-uh0smjlncdboosfhieeq6k4om8dq3tnk.apps.googleusercontent.com";
                 googleOptions.ClientSecret = "ytZY_YbW1J9ML0T9-QImqJsi";
             });
-            
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -61,7 +61,7 @@ namespace Web_shop
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -84,6 +84,42 @@ namespace Web_shop
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CreateRoles(serviceProvider).Wait();
+            
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var roleExist = await roleManager.RoleExistsAsync("Administrator");
+            if (!roleExist)
+            {
+                var role = new IdentityRole("Administrator");
+                var res = await roleManager.CreateAsync(role);
+            }
+
+            var adminUser = new ApplicationUser
+            {
+                UserName = Configuration.GetSection("Logging:UserSettings")["UserEmail"],
+                Email = Configuration.GetSection("Logging:UserSettings")["UserEmail"]
+            };
+
+            string userPassword = Configuration.GetSection("Logging:UserSettings")["UserPassword"];
+            var _user = await userManager.FindByEmailAsync(Configuration.GetSection("Logging:UserSettings")["UserEmail"]);
+
+            if (_user == null)
+            {
+                var createPowerUser = await userManager.CreateAsync(adminUser, userPassword);
+
+                if (createPowerUser.Succeeded)
+
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Administrator");
+                }
+            }
         }
     }
 }
