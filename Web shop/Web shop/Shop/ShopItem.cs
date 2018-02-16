@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Webshop.Shop
 {
     public class ShopItem
     {
         public Guid Id { get; set;}
+        [Required]
         public string Name { get; set; }
+        [Required]
         public decimal Price { get; set; }
+        [Required]
         public string Description { get; set; }
 
         public List<ShopItemCategory> Categories { get; set; }
@@ -17,7 +21,7 @@ namespace Webshop.Shop
             Id = Guid.NewGuid();
             Name = name;
             Price = price;
-            Description = description;
+            Description = description.Trim();
             Categories = new List<ShopItemCategory>();
         }
 

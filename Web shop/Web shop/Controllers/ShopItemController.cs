@@ -135,6 +135,8 @@ namespace Web_shop.Controllers
         [HttpPost]
         public async Task<IActionResult> EditItem(ShopItem item)
         {
+            item.Name = item.Name.Trim();
+            item.Description = item.Description.Trim();
             _repository.UpdateItem(item);
             return RedirectToAction("Index");
         }
@@ -148,6 +150,7 @@ namespace Web_shop.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCategory(ShopItemCategory category)
         {
+            category.Name = category.Name.Trim().ToLower();
             _repository.UpdateCategory(category);
             return RedirectToAction("CategoryIndex");
         }
@@ -160,10 +163,10 @@ namespace Web_shop.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("RemoveCategory/{itemId}")]
-        public async Task<IActionResult> RemoveCategory(Guid itemId)
+        [HttpGet("RemoveCategory/{categoryId}")]
+        public async Task<IActionResult> RemoveCategory(Guid categoryId)
         {
-            _repository.RemoveCategory(itemId);
+            _repository.RemoveCategory(categoryId);
             return RedirectToAction("CategoryIndex");
         }
 
