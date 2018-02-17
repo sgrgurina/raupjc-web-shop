@@ -106,7 +106,7 @@ namespace Webshop.Shop
 
         public List<ShopItem> GetFilteredByCategory(ShopItemCategory category)
         {
-            List<ShopItem> items = _context.Items.Where(i => i.Categories.Contains(category)).ToList();
+            List<ShopItem> items = _context.Items.Where(i => i.Categories.Any(c => c.Id == category.Id)).ToList();
             return items;
         }
     }

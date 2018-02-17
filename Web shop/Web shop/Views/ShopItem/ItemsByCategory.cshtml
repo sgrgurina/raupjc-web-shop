@@ -1,27 +1,32 @@
 ﻿@model Webshop.Models.ShopViewModels.ShopIndexViewModel
 
 @{
-    ViewBag.Title = "Products";
-    Layout = "_Layout";
+    ViewData["Title"] = "ItemsByCategory";
 }
 
-<html>
-<head>
-    <title>Items</title>
-</head>
-<body>
+<h2>Filtered items</h2>
 
-<h2>Items</h2>
-<br/>
-<div>
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
     @foreach (var item in Model.ItemViewModels)
     {
         <p>
-            <b>@item.Name</b><br/>
+            <b>@item.Name</b><br /> 
             Price: @item.Price.ToString("C")<br/>
             <a asp-controller="ShopItem" asp-action="ItemDetails", asp-route-itemId="@item.Id">Details</a>
         </p>
     }
+    
+    </tbody>
+</table>
+<div>
+    <a asp-action="CategoryIndex">Back to categories</a>
 </div>
-</body>
-</html>
+
+
+

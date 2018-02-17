@@ -20,6 +20,7 @@
         <tr>
             <td>
                 <b>Name:</b> &nbsp;@category.Name &nbsp; |
+                <a asp-action="ItemsByCategory" , asp-route-categoryId="@category.Id">Products in category</a> |
                 <a asp-action="EditCategory" , asp-route-categoryId="@category.Id">Edit</a> |
                 <a asp-action="RemoveCategory" , asp-route-categoryId="@category.Id">Delete</a>
             </td>

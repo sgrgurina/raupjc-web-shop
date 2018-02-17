@@ -118,6 +118,24 @@ namespace Web_shop.Controllers
             return View(categoryIndexViewModel);
         }
 
+        public async Task<IActionResult> ItemsByCategory(Guid categoryId)
+        {
+            List<ItemViewModel> itemViewModels = new List<ItemViewModel>();
+
+            ShopItemCategory category = _repository.GetCategoryById(categoryId);
+            List<ShopItem> items = _repository.GetFilteredByCategory(category);
+            foreach (var item in items) 
+            {
+                ItemViewModel itemViewModel = new ItemViewModel(item.Id, item.Name, item.Price);
+                itemViewModels.Add(itemViewModel);
+            }
+
+            ShopIndexViewModel filteredIndexViewModel = new ShopIndexViewModel(itemViewModels);
+
+            return View(filteredIndexViewModel);
+
+        }
+
         [HttpGet("ItemDetails/{itemId}")]
         public async Task<IActionResult> ItemDetails(Guid itemId)
         {
