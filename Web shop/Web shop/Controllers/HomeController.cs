@@ -12,7 +12,7 @@ namespace Web_shop.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "ShopItem" );
         }
 
         public IActionResult About()

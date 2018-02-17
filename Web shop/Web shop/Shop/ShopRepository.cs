@@ -55,6 +55,7 @@ namespace Webshop.Shop
             _context.Categories.Add(category);
             _context.SaveChanges();
         }
+        
 
         public bool RemoveItem(Guid itemId)
         {

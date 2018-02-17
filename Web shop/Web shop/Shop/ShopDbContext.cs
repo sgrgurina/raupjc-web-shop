@@ -6,6 +6,7 @@ namespace Webshop.Shop
     {
         public IDbSet<ShopItem> Items { get; set; }
         public IDbSet<ShopItemCategory> Categories { get; set; }
+        public IDbSet<CartItem> CartItems { get; set; }
 
         public ShopDbContext(string cnnstr) : base(cnnstr)
         {
@@ -22,6 +23,12 @@ namespace Webshop.Shop
 
             modelBuilder.Entity<ShopItemCategory>().HasKey(c => c.Id);
             modelBuilder.Entity<ShopItemCategory>().Property(c => c.Name).IsRequired();
+
+            modelBuilder.Entity<CartItem>().HasKey(i => i.CartItemId);
+            modelBuilder.Entity<CartItem>().Property(i => i.CartId).IsRequired();
+            modelBuilder.Entity<CartItem>().Property(i => i.Amount).IsRequired();
+            modelBuilder.Entity<CartItem>().HasRequired(i => i.ShopItem);
+
         }
     }
 }

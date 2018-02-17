@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Google.Apis;
 using Google;
+using Microsoft.AspNetCore.Http;
 using Webshop.Shop;
 using Web_shop.Data;
 using Web_shop.Models;
@@ -33,6 +34,8 @@ namespace Web_shop
         {
             services.AddTransient<IShopRepository, ShopRepository>();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => ShoppingCart.GetCart(sp));
             services.AddScoped((s) =>
             {
                 return new ShopDbContext(Configuration.GetConnectionString("DefaultConnection"));
@@ -58,6 +61,8 @@ namespace Web_shop
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +82,8 @@ namespace Web_shop
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

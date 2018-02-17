@@ -19,7 +19,8 @@
         <p>
             <b>@item.Name</b><br/>
             Price: @item.Price.ToString("C")<br/>
-            <a asp-controller="ShopItem" asp-action="ItemDetails", asp-route-itemId="@item.Id">Details</a>
+            <a asp-controller="ShopItem" asp-action="ItemDetails", asp-route-itemId="@item.Id">Details</a> |
+            <a asp-controller="ShoppingCart" asp-action="AddToShoppingCart", asp-route-itemId="@item.Id">Add to cart</a>          
         </p>
     }
 </div>
