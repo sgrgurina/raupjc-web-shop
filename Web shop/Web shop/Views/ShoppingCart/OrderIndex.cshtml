@@ -1,0 +1,33 @@
+﻿@model Webshop.Models.ShopViewModels.OrderIndexViewModel
+
+@{
+    ViewData["Title"] = "OrderIndex";
+}
+
+<h2>Orders</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Contact Email</th>
+        <th>Total Price</th>
+        <th>Order placed date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model.OrderViewModels)
+    {
+        <tr>
+            <td>@order.BuyerName</td>
+            <td>@order.BuyerSurname</td>
+            <td>@order.ContactEmail</td>
+            <td>@order.TotalPrice</td>
+            <td>@order.OrderPlacedTime</td>
+            <td><a asp-controller="ShoppingCart" asp-action="OrderDetails", asp-route-orderId="@order.OrderId">Details</a></td>
+
+        </tr>
+    }
+    </tbody>
+</table>

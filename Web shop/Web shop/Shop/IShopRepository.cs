@@ -82,7 +82,24 @@ namespace Webshop.Shop
         /// <param name="category">Category of items we are looking for</param>
         /// <returns>List of all items with the category </returns>
         List<ShopItem> GetFilteredByCategory(ShopItemCategory category);
-        
 
+        /// <summary>
+        /// Adds order to database.
+        /// </summary>
+        /// <param name="order">Order to add to database.</param>
+        void AddOrder(Order order);
+
+        /// <summary>
+        /// Get all orders from database.
+        /// </summary>
+        /// <returns>List of orders.</returns>
+        List<Order> GetAllOrders();
+
+        /// <summary>
+        /// Gets order with given id.
+        /// </summary>
+        /// <param name="orderId">Id of Order.</param>
+        /// <returns>Order with given id</returns>
+        Order GetOrder(Guid orderId);
     }
 }

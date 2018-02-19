@@ -1,0 +1,82 @@
+﻿@model Webshop.Shop.Order
+
+@{
+    ViewData["Title"] = "OrderDetails";
+}
+
+<h2>Order Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Buyer Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BuyerName)
+        </dd>
+        <dt>
+            Buyer Surname
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BuyerSurname)
+        </dd>
+        <dt>
+            Contact Email
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContactEmail)
+        </dd>
+        <dt>
+            Phone Number
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            Adress
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adress)
+        </dd>
+        <dt>
+            Total Price
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt>
+            Order Date and Time
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderPlacedTime)
+        </dd>
+        
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Item name</th>
+                <th>Price of one item</th>
+                <th>Quantity</th>
+                <th>Total price</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var orderInfo in Model.OrderInformation)
+            {
+                <tr>
+                    <td>@orderInfo.Item.Name</td>
+                    <td>@orderInfo.Item.Price</td>
+                    <td>@orderInfo.Amount</td>
+                    <td>@((orderInfo.Item.Price * orderInfo.Amount).ToString("C"))</td>
+                    <td><a asp-controller="ShopItem" asp-action="ItemDetails" , asp-route-itemId="@orderInfo.Item.Id">Details</a></td>
+                </tr>
+            }
+            </tbody>
+    
+        </table>
+    </dl>
+</div>
+<div>
+    <a asp-action="OrderIndex">Back to List</a>
+</div>

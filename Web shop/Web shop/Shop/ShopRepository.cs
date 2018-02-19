@@ -10,8 +10,9 @@ namespace Webshop.Shop
     public class ShopRepository : IShopRepository
     {
         private readonly ShopDbContext _context;
+        private readonly ShoppingCart _shoppingCart;
 
-        public ShopRepository(ShopDbContext context)
+        public ShopRepository(ShopDbContext context, ShoppingCart shoppingCart)
         {
             _context = context;
         }
@@ -109,6 +110,24 @@ namespace Webshop.Shop
         {
             List<ShopItem> items = _context.Items.Where(i => i.Categories.Any(c => c.Id == category.Id)).ToList();
             return items;
+        }
+
+        public void AddOrder(Order order)
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+        }
+
+        public List<Order> GetAllOrders()
+        {
+            List<Order> orders = _context.Orders.OrderBy(o => o.BuyerSurname).ToList();
+            return orders;
+        }
+
+        public Order GetOrder(Guid orderId)
+        {
+            Order order = _context.Orders.Include(o=>o.OrderInformation.Select(i=>i.Item)).FirstOrDefault(o => o.OrderId == orderId);
+            return order;
         }
     }
 }
