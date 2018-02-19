@@ -30,7 +30,15 @@
     </dl>
 </div>
 <div>
-    <a asp-action="EditItem"  asp-route-itemId="@Model.Id">Edit</a>  &nbsp
-    <a asp-action="RemoveItem" asp-route-itemId="@Model.Id"> Delete item</a> &nbsp
+    @if (User.IsInRole("Administrator"))
+    {
+        <a asp-action="EditItem" asp-route-itemId="@Model.Id">Edit</a>
+    }
+    &nbsp
+    @if (User.IsInRole("Administrator"))
+    {
+        <a asp-action="RemoveItem" asp-route-itemId="@Model.Id"> Delete item</a>
+    }
+     &nbsp
     <a asp-action="Index">Back to List</a>
 </div>

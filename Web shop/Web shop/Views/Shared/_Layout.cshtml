@@ -31,10 +31,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="ShopItem" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="ShopItem" asp-action="Add">Add item</a></li>
                     <li><a asp-area="" asp-controller="ShopItem" asp-action="CategoryIndex">Categories</a></li>
                     <li><a asp-area="" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a></li>
-                    <li><a asp-area="" asp-controller="ShoppingCart" asp-action="OrderIndex">Orders</a></li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li><a asp-area="" asp-controller="ShopItem" asp-action="Add">Add item</a></li>
+                        <li><a asp-area="" asp-controller="ShoppingCart" asp-action="OrderIndex">Orders</a></li>
+                    }
+                    
+                    
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

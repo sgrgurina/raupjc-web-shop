@@ -52,8 +52,8 @@ namespace Web_shop
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = "641406574507-uh0smjlncdboosfhieeq6k4om8dq3tnk.apps.googleusercontent.com";
-                googleOptions.ClientSecret = "ytZY_YbW1J9ML0T9-QImqJsi";
+                googleOptions.ClientId = Configuration.GetSection("Google")["ClientId"];
+                googleOptions.ClientSecret = Configuration.GetSection("Google")["ClientSecret"];
             });
 
 
